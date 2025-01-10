@@ -4,7 +4,7 @@ namespace FlowerInputSystem.Actions;
 
 public sealed class InputAction
 {
-    public event Action OnPerformed;
+    public event Action OnPerformed, OnCanceled, OnStarted;
     
     public string Name { get; set; }
 
@@ -21,11 +21,13 @@ public sealed class InputAction
                 case ActionPhase.Waiting:
                     break;
                 case ActionPhase.Started:
+                    OnStarted.Invoke();
                     break;
                 case ActionPhase.Performed:
-                    OnPerformed?.Invoke();
+                    OnPerformed.Invoke();
                     break;
                 case ActionPhase.Canceled:
+                    OnCanceled.Invoke();
                     break;
             }
         }

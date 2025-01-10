@@ -2,5 +2,30 @@
 
 [ext_resource type="Script" path="res://World.cs" id="1_pw6ul"]
 
-[node name="World" type="Node2D"]
+[node name="World" type="Node2D" node_paths=PackedStringArray("DisableAllInputMapBtn", "EnableAllInputMapBtn", "LoggerLabel")]
 script = ExtResource("1_pw6ul")
+DisableAllInputMapBtn = NodePath("DisableAllInputMap")
+EnableAllInputMapBtn = NodePath("EnableAllInputMap")
+LoggerLabel = NodePath("LoggerLabel")
+
+[node name="DisableAllInputMap" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 40
+text = "DisableAllInputMap"
+
+[node name="EnableAllInputMap" type="Button" parent="."]
+offset_top = 76.0
+offset_right = 388.0
+offset_bottom = 139.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 40
+text = "EnableAllInputMap"
+
+[node name="LoggerLabel" type="Label" parent="."]
+offset_top = 287.0
+offset_right = 85.0
+offset_bottom = 356.0
+theme_override_font_sizes/font_size = 50
+text = "Log"
