@@ -22,7 +22,7 @@ public partial class World : Node2D
             File.ReadAllText("DefaultMap.json")
             );
 
-        _inputAction = _actionMap.FindAction("Space");
+        _inputAction = _actionMap.FindAction("Space or Right");
 
         if (_inputAction == null) throw new Exception("Input action not found");
         

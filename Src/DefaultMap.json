@@ -3,11 +3,12 @@
   "Actions":
   [
     {
-      "Name":"Space",
+      "Name":"Space or Right",
       "Bindings":
       [
         {
-          "Key": "Space"
+          "Key": "Space",
+          "MouseButton": "Right"
         }
       ]
     }

@@ -60,7 +60,7 @@ public sealed class InputAction
         
         foreach (var binding in Bindings)
         {
-            if (Input.IsPhysicalKeyPressed(binding.Key) &&
+            if (PressedKey(binding) &&
                 ActionPhase == ActionPhase.Waiting &&
                 !_wasKeyJustPressedLastFrame
                 )
@@ -68,13 +68,21 @@ public sealed class InputAction
                 ActionPhase = ActionPhase.Performed;
             }
             else if (ActionPhase == ActionPhase.Performed &&
-                     Input.IsPhysicalKeyPressed(binding.Key)
+                     PressedKey(binding)
                      )
             {
                 ActionPhase = ActionPhase.Waiting;
             }
-            
-            _wasKeyJustPressedLastFrame = Input.IsPhysicalKeyPressed(binding.Key);
+
+            _wasKeyJustPressedLastFrame = PressedKey(binding);
         }
+    }
+
+    private bool PressedKey(InputBinding binding)
+    {
+        if (Input.IsPhysicalKeyPressed(binding.Key)) return true;
+        if (Input.IsMouseButtonPressed(binding.MouseButton)) return true;
+        if (Input.IsJoyButtonPressed(0, binding.JoyButton)) return true;
+        return false;
     }
 }
