@@ -32,11 +32,10 @@ public sealed class InputAction
     }
 
     private readonly List<InputBinding> _bindings;
-
-    public InputAction(
-        List<InputBinding> bindings,
-        string name = ""
-        )
+    
+    private bool _wasKeyJustPressedLastFrame = false;
+    
+    public InputAction(List<InputBinding> bindings, string name = "")
     {
         Name = name;
         _bindings = bindings;
@@ -46,16 +45,23 @@ public sealed class InputAction
     {
         if (ActionPhase == ActionPhase.Disabled) return;
         
-        if (ActionPhase == ActionPhase.Performed) ActionPhase = ActionPhase.Waiting;
-        
         foreach (var binding in _bindings)
         {
             if (Input.IsPhysicalKeyPressed(binding.Key) &&
-                ActionPhase == ActionPhase.Waiting
+                ActionPhase == ActionPhase.Waiting &&
+                !_wasKeyJustPressedLastFrame
                 )
             {
                 ActionPhase = ActionPhase.Performed;
             }
+            else if (ActionPhase == ActionPhase.Performed &&
+                     Input.IsPhysicalKeyPressed(binding.Key)
+                     )
+            {
+                ActionPhase = ActionPhase.Waiting;
+            }
+            
+            _wasKeyJustPressedLastFrame = Input.IsPhysicalKeyPressed(binding.Key);
         }
     }
 }

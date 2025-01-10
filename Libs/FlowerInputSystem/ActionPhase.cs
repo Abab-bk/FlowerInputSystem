@@ -1,4 +1,4 @@
-﻿namespace FlowerInputSystem.Actions;
+﻿namespace FlowerInputSystem;
 
 public enum ActionPhase
 {
