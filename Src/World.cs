@@ -1,6 +1,9 @@
+using System;
+using System.IO;
 using Godot;
 using FlowerInputSystem;
 using FlowerInputSystem.Actions;
+using Newtonsoft.Json;
 
 namespace FlowerInputDemo;
 
@@ -9,17 +12,20 @@ public partial class World : Node2D
     [Export] private Button DisableAllInputMapBtn { get; set; }
     [Export] private Button EnableAllInputMapBtn { get; set; }
     [Export] private Label LoggerLabel { get; set; }
-    
-    private InputAction _inputAction = new InputAction([
-    new InputBinding()
-    {
-        Key = Key.Space
-    }
-    ], "TestInputAction");
+
+    private InputAction _inputAction;
     private ActionMap _actionMap;
     
     public override void _Ready()
     {
+        _actionMap = JsonConvert.DeserializeObject<ActionMap>(
+            File.ReadAllText("DefaultMap.json")
+            );
+
+        _inputAction = _actionMap.FindAction("Space");
+
+        if (_inputAction == null) throw new Exception("Input action not found");
+        
         _inputAction.OnStarted += () =>
         {
             Log($"{_inputAction.Name} started");
@@ -43,8 +49,8 @@ public partial class World : Node2D
             Log("All input maps enabled");
         };
 
-        _actionMap = new ActionMap([_inputAction]);
-        InputSystem.Initialize([_actionMap]);
+        InputSystem.Initialize([]);
+        InputSystem.AddActionMap(_actionMap);
     }
 
     private void Log(string message)

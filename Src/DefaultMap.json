@@ -1,0 +1,15 @@
+﻿{
+  "Name":"DefaultMap",
+  "Actions":
+  [
+    {
+      "Name":"Space",
+      "Bindings":
+      [
+        {
+          "Key": "Space"
+        }
+      ]
+    }
+  ]
+}

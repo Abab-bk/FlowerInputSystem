@@ -44,7 +44,13 @@ public static class InputSystem
             ActionMapContainers.Add(new ActionMapContainer(actionMap));
         }
     }
+    
+    public static void AddActionMap(ActionMap actionMap) =>
+        ActionMapContainers.Add(new ActionMapContainer(actionMap));
 
+    public static ActionMap? FindActionMap(string name) =>
+        ActionMapContainers.Find(x => x.ActionMap.Name == name)?.ActionMap;
+    
     public static void Update()
     {
         foreach (var actionMapContainer in ActionMapContainers)

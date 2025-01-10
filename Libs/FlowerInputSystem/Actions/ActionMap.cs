@@ -2,11 +2,19 @@
 
 public class ActionMap
 {
-    public List<InputAction> Actions;
+    public string Name { get; set; } = "";
+    public List<InputAction> Actions { get; set; }
+
+    public InputAction? FindAction(string name) => Actions.Find(x => x.Name == name);
 
     public ActionMap(List<InputAction> actions)
     {
         Actions = actions;
+    }
+
+    public ActionMap()
+    {
+        Actions = [];
     }
 
     public void Update()

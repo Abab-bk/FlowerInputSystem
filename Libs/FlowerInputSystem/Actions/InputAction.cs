@@ -1,15 +1,20 @@
-﻿using Godot;
+﻿using System.Runtime.Serialization;
+using Godot;
 
 namespace FlowerInputSystem.Actions;
 
 public sealed class InputAction
 {
-    public event Action OnPerformed, OnCanceled, OnStarted;
+    public event Action
+        OnPerformed = delegate { },
+        OnCanceled = delegate { },
+        OnStarted = delegate { };
     
     public string Name { get; set; }
 
     private ActionPhase _phase = ActionPhase.Waiting;
 
+    [IgnoreDataMember]
     public ActionPhase ActionPhase
     {
         get => _phase;
@@ -33,21 +38,27 @@ public sealed class InputAction
         }
     }
 
-    private readonly List<InputBinding> _bindings;
+    public List<InputBinding> Bindings { get; set; }
     
     private bool _wasKeyJustPressedLastFrame = false;
     
     public InputAction(List<InputBinding> bindings, string name = "")
     {
         Name = name;
-        _bindings = bindings;
+        Bindings = bindings;
+    }
+    
+    public InputAction()
+    {
+        Name = "";
+        Bindings = [];
     }
 
     public void Update()
     {
         if (ActionPhase == ActionPhase.Disabled) return;
         
-        foreach (var binding in _bindings)
+        foreach (var binding in Bindings)
         {
             if (Input.IsPhysicalKeyPressed(binding.Key) &&
                 ActionPhase == ActionPhase.Waiting &&
