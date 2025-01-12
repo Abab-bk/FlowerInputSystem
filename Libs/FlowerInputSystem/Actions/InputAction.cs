@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using FlowerInputSystem.InputTriggers;
 using Godot;
 
 namespace FlowerInputSystem.Actions;
@@ -37,53 +38,20 @@ public sealed class InputAction
             }
         }
     }
-
-    public List<InputBinding> Bindings { get; set; }
-    public Vector2Composite? Vector2Composite { get; set; }
     
-    private bool _wasKeyJustPressedLastFrame = false;
+    public InputValueType ValueType { get; set; }
+    public List<InputTrigger> Triggers { get; set; } = new();
     
-    public InputAction(List<InputBinding> bindings, string name = "")
-    {
-        Name = name;
-        Bindings = bindings;
-    }
-    
-    public InputAction()
-    {
-        Name = "";
-        Bindings = [];
-    }
-
     public void Update()
     {
         if (ActionPhase == ActionPhase.Disabled) return;
-        
-        foreach (var binding in Bindings)
-        {
-            if (PressedKey(binding) &&
-                ActionPhase == ActionPhase.Waiting &&
-                !_wasKeyJustPressedLastFrame
-                )
-            {
-                ActionPhase = ActionPhase.Performed;
-            }
-            else if (ActionPhase == ActionPhase.Performed &&
-                     PressedKey(binding)
-                     )
-            {
-                ActionPhase = ActionPhase.Waiting;
-            }
-
-            _wasKeyJustPressedLastFrame = PressedKey(binding);
-        }
     }
 
-    private bool PressedKey(InputBinding binding)
-    {
-        if (Input.IsPhysicalKeyPressed(binding.Key)) return true;
-        if (Input.IsMouseButtonPressed(binding.MouseButton)) return true;
-        if (Input.IsJoyButtonPressed(0, binding.JoyButton)) return true;
-        return false;
-    }
+    // private bool PressedKey(InputBinding binding)
+    // {
+    //     if (Input.IsPhysicalKeyPressed(binding.Key)) return true;
+    //     if (Input.IsMouseButtonPressed(binding.MouseButton)) return true;
+    //     if (Input.IsJoyButtonPressed(0, binding.JoyButton)) return true;
+    //     return false;
+    // }
 }
