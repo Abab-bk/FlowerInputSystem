@@ -39,6 +39,7 @@ public sealed class InputAction
     }
 
     public List<InputBinding> Bindings { get; set; }
+    public Vector2Composite? Vector2Composite { get; set; }
     
     private bool _wasKeyJustPressedLastFrame = false;
     
