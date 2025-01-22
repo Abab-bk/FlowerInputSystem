@@ -1,57 +1,56 @@
-﻿using System.Runtime.Serialization;
-using FlowerInputSystem.InputTriggers;
-using Godot;
+﻿using FlowerInputSystem.Binds;
+using FlowerInputSystem.Conditions;
+using FlowerInputSystem.Modifiers;
+using FlowerInputSystem.Values;
 
 namespace FlowerInputSystem.Actions;
 
-public sealed class InputAction
+public class InputAction(
+    string name,
+    List<InputBind> binds,
+    List<IInputModifier>? modifiers = null,
+    List<IInputCondition>? conditions = null
+    )
 {
-    public event Action
-        OnPerformed = delegate { },
-        OnCanceled = delegate { },
-        OnStarted = delegate { };
+    public event Action OnFired = () => { };
     
-    public string Name { get; set; }
+    public string Name { get; set; } = name;
+    public List<InputBind> Binds { get; set; } = binds;
+    public List<IInputModifier> Modifiers { get; set; } = modifiers ?? new();
+    public List<IInputCondition> Conditions { get; set; } = conditions ?? new();
+    public ValueDimension ValueDimension { get; set; }
 
-    private ActionPhase _phase = ActionPhase.Waiting;
-
-    [IgnoreDataMember]
-    public ActionPhase ActionPhase
-    {
-        get => _phase;
-        set
-        {
-            _phase = value;
-            switch (_phase)
-            {
-                case ActionPhase.Waiting:
-                    break;
-                case ActionPhase.Started:
-                    OnStarted.Invoke();
-                    break;
-                case ActionPhase.Performed:
-                    OnPerformed.Invoke();
-                    break;
-                case ActionPhase.Canceled:
-                    OnCanceled.Invoke();
-                    break;
-            }
-        }
-    }
-    
-    public InputValueType ValueType { get; set; }
-    public List<InputTrigger> Triggers { get; set; } = new();
-    
     public void Update()
     {
-        if (ActionPhase == ActionPhase.Disabled) return;
-    }
+        var tracer = new TriggerTracer(IActionValue.Zero(ValueDimension));
 
-    // private bool PressedKey(InputBinding binding)
-    // {
-    //     if (Input.IsPhysicalKeyPressed(binding.Key)) return true;
-    //     if (Input.IsMouseButtonPressed(binding.MouseButton)) return true;
-    //     if (Input.IsJoyButtonPressed(0, binding.JoyButton)) return true;
-    //     return false;
-    // }
+        var fired = false;
+        
+        foreach (var bind in Binds)
+        {
+            var value = InputSystem.Reader.GetValue(bind.Input);
+            if (value.AsBool())
+            {
+                fired = true;
+                break;
+            }
+            // var currentTracer = new TriggerTracer(value);
+            // currentTracer.ApplyModifiers();
+            // currentTracer.ApplyConditions();
+            //
+            // var currentState = currentTracer.GetActionState();
+            // if (currentState == InputActionState.None) continue;
+            //
+            // var tracerState = tracer.GetActionState();
+            // if (currentState == tracerState)
+            // {
+            // }
+            // TODO
+        }
+        
+        // tracer.ApplyModifiers();
+        // tracer.ApplyConditions();
+
+        if (fired) OnFired();
+    }
 }

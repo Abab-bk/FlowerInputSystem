@@ -1,0 +1,13 @@
+﻿Name: Default
+Actions:
+  - Name: Hold3Seconds
+    Bindings:
+      - Key: Space
+      - MouseButton: Left
+        Modifiers:
+          - Type: Enlarge
+            Value: 2
+    Modifiers:
+    Conditions:
+      - Type: Hold
+        Value: 3

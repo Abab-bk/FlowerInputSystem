@@ -10,7 +10,7 @@
     <ProjectReference Include="..\Libs\FlowerInputSystem\FlowerInputSystem.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DefaultMap.json">
+    <Content Include="DefaultMap.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
