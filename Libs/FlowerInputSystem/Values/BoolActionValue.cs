@@ -3,5 +3,6 @@
 public struct BoolActionValue(bool value) : IActionValue
 {
     public bool Value { get; set; } = value;
-    public bool AsBool() => Value;
+    public ValueDimension Dimension { get; }
+    public bool IsActuated(float actuation) => Value;
 }

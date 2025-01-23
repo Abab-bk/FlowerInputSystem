@@ -11,7 +11,6 @@ internal class InputReader
     public void UpdateState()
     {
         _consumedInput.Reset();
-        
     }
 
     public IActionValue GetValue(IInput input)
@@ -33,7 +32,7 @@ internal class InputReader
         throw new NotImplementedException();
     }
 
-    private void Consume(IInput input)
+    public void Consume(IInput input)
     {
         if (input is KeyboardInput keyboardInput)
         {

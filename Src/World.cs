@@ -2,6 +2,7 @@ using Godot;
 using FlowerInputSystem;
 using FlowerInputSystem.Actions;
 using FlowerInputSystem.Binds;
+using FlowerInputSystem.Conditions;
 using FlowerInputSystem.Inputs;
 using InputMap = FlowerInputSystem.Contexts.InputMap;
 
@@ -22,8 +23,11 @@ public partial class World : Node2D
             "Pressed Space",
             [new InputBind()
             {
-                Input = new KeyboardInput(Key.Space)
-            }]
+                Input = new KeyboardInput(Key.Space),
+                Conditions = [new PressCondition()]
+            }],
+            [],
+            []
             );
         _inputMap = new InputMap(
             "Default",
@@ -64,6 +68,6 @@ public partial class World : Node2D
 
     public override void _Process(double delta)
     {
-        InputSystem.Update();
+        InputSystem.Update((float)delta);
     }
 }

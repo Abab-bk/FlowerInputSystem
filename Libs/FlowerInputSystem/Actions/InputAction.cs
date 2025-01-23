@@ -1,7 +1,9 @@
 ﻿using FlowerInputSystem.Binds;
 using FlowerInputSystem.Conditions;
+using FlowerInputSystem.Inputs;
 using FlowerInputSystem.Modifiers;
 using FlowerInputSystem.Values;
+using Godot;
 
 namespace FlowerInputSystem.Actions;
 
@@ -15,42 +17,29 @@ public class InputAction(
     public event Action OnFired = () => { };
     
     public string Name { get; set; } = name;
+    public Accumulation Accumulation { get; set; }
+    public ValueDimension ValueDimension { get; set; }
     public List<InputBind> Binds { get; set; } = binds;
     public List<IInputModifier> Modifiers { get; set; } = modifiers ?? new();
     public List<IInputCondition> Conditions { get; set; } = conditions ?? new();
-    public ValueDimension ValueDimension { get; set; }
+    
+    private readonly List<IInput> _consumeBuffer = new();
 
-    public void Update()
+    public void Update(float delta)
     {
         var tracer = new TriggerTracer(IActionValue.Zero(ValueDimension));
-
-        var fired = false;
         
         foreach (var bind in Binds)
         {
             var value = InputSystem.Reader.GetValue(bind.Input);
-            if (value.AsBool())
-            {
-                fired = true;
-                break;
-            }
-            // var currentTracer = new TriggerTracer(value);
-            // currentTracer.ApplyModifiers();
-            // currentTracer.ApplyConditions();
-            //
-            // var currentState = currentTracer.GetActionState();
-            // if (currentState == InputActionState.None) continue;
-            //
-            // var tracerState = tracer.GetActionState();
-            // if (currentState == tracerState)
-            // {
-            // }
-            // TODO
+            
+            var currentTracer = new TriggerTracer(value);
+            currentTracer.ApplyConditions(delta, bind.Conditions);
+            
+            tracer.Combine(currentTracer, Accumulation);
         }
         
-        // tracer.ApplyModifiers();
-        // tracer.ApplyConditions();
-
-        if (fired) OnFired();
+        tracer.ApplyConditions(delta, Conditions);
+        if (tracer.AnyExplicitFired) OnFired();
     }
 }

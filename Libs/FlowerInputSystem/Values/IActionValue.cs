@@ -2,7 +2,9 @@
 
 public interface IActionValue
 {
-    public bool AsBool();
+    public ValueDimension Dimension { get; }
+    
+    public bool IsActuated(float actuation);
 
     public static IActionValue Zero(ValueDimension valueDimension)
     {

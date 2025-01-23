@@ -14,14 +14,14 @@ public static class InputSystem
         Reader = new InputReader();
         InputMaps = maps;
     }
-    
-    public static void Update()
+
+    public static void Update(float delta)
     {
         Reader.UpdateState();
 
         foreach (var inputMap in InputMaps)
         {
-            inputMap.Update();
+            inputMap.Update(delta);
         }
     }
 }
