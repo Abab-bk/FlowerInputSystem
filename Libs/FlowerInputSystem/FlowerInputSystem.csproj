@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="GodotSharp" Version="4.3.0" />
+      <PackageReference Include="VYaml" Version="0.28.1" />
     </ItemGroup>
 
 </Project>

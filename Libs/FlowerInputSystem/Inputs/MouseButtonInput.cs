@@ -1,8 +1,10 @@
 ﻿using Godot;
+using VYaml.Annotations;
 
 namespace FlowerInputSystem.Inputs;
 
-public struct MouseButtonInput : IInput
+[YamlObject]
+public partial struct MouseButtonInput : IInput
 {
     public MouseButton MouseButton { get; set; }
 }

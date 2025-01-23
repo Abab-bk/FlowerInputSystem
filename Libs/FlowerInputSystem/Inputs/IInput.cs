@@ -1,6 +1,11 @@
-﻿namespace FlowerInputSystem.Inputs;
+﻿using VYaml.Annotations;
 
-public interface IInput
+namespace FlowerInputSystem.Inputs;
+
+[YamlObject]
+[YamlObjectUnion("!keyboard", typeof(KeyboardInput))]
+[YamlObjectUnion("!mouse-button", typeof(MouseButtonInput))]
+public partial interface IInput
 {
     
 }

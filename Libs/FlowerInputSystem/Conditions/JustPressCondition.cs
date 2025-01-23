@@ -1,18 +1,22 @@
 ﻿using FlowerInputSystem.Actions;
 using FlowerInputSystem.Values;
+using Godot;
+using VYaml.Annotations;
 
 namespace FlowerInputSystem.Conditions;
 
-public struct JustPressCondition() : IInputCondition
+[YamlObject]
+public partial struct JustPressCondition() : IInputCondition
 {
-    public float Actuation { get; set; } = 1f;
-    private bool _actuated;
+    private bool _previouslyActuated = false;
+    public float Actuation { get; set; }
     
     public InputActionState Evaluate(IActionValue actionValue, float delta)
     {
-        var previouslyActuated = _actuated;
-        _actuated = actionValue.IsActuated(Actuation);
-        return _actuated && !previouslyActuated ?
+        var pressed = actionValue.IsActuated(Actuation);
+        var result = pressed && !_previouslyActuated ?
             InputActionState.Fired : InputActionState.None;
+        _previouslyActuated = pressed;
+        return result;
     }
 }

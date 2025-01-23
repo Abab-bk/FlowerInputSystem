@@ -1,10 +1,13 @@
+using System;
+using System.IO;
 using Godot;
 using FlowerInputSystem;
 using FlowerInputSystem.Actions;
 using FlowerInputSystem.Binds;
 using FlowerInputSystem.Conditions;
+using FlowerInputSystem.Contexts;
 using FlowerInputSystem.Inputs;
-using InputMap = FlowerInputSystem.Contexts.InputMap;
+using VYaml.Serialization;
 
 namespace FlowerInputDemo;
 
@@ -14,25 +17,24 @@ public partial class World : Node2D
     [Export] private Button EnableAllInputMapBtn { get; set; }
     [Export] private Label LoggerLabel { get; set; }
 
-    private InputAction _inputAction;
-    private InputMap _inputMap;
+    private InputAction
+        _pressAction,
+        _justPressAction,
+        _holdAction;
+    private ActionMap _actionMap;
     
     public override void _Ready()
     {
-        _inputAction = new InputAction(
-            "Pressed Space",
-            [new InputBind()
-            {
-                Input = new KeyboardInput(Key.Space),
-                Conditions = [new PressCondition()]
-            }],
-            [],
-            []
-            );
-        _inputMap = new InputMap(
-            "Default",
-            [_inputAction]
-            );
+        _actionMap = ActionMap.CreateFromYaml(File.ReadAllText("DefaultMap.yaml"));
+
+        _pressAction = _actionMap.FindAction("PressK");
+        _justPressAction = _actionMap.FindAction("JustPressL");
+        _holdAction = _actionMap.FindAction("Hold-Space-1s");
+        
+        if (_pressAction == null || _justPressAction == null || _holdAction == null)
+        {
+            throw new Exception("Actions not found");
+        }
         
         // _inputAction.OnStarted += () =>
         // {
@@ -42,9 +44,17 @@ public partial class World : Node2D
         // {
         //     Log($"{_inputAction.Name} canceled");
         // };
-        _inputAction.OnFired += () =>
+        _pressAction.OnFired += () =>
         {
-            Log($"{_inputAction.Name} fired");
+            Log($"{_pressAction.Name} fired");
+        };
+        _justPressAction.OnFired += () =>
+        {
+            Log($"{_justPressAction.Name} fired");
+        };
+        _holdAction.OnFired += () =>
+        {
+            Log($"{_holdAction.Name} fired");
         };
         // DisableAllInputMapBtn.Pressed += () =>
         // {
@@ -57,7 +67,7 @@ public partial class World : Node2D
         //     Log("All input maps enabled");
         // };
         
-        InputSystem.Initialize([_inputMap]);
+        InputSystem.Initialize([_actionMap]);
     }
 
     private void Log(string message)

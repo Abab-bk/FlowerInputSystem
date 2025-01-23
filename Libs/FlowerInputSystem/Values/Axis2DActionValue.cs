@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+﻿using Vector2 = Godot.Vector2;
 
 namespace FlowerInputSystem.Values;
 

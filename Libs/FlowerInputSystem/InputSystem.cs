@@ -6,10 +6,10 @@ public static class InputSystem
 {
     #nullable disable
     internal static InputReader Reader { get; private set; }
-    internal static IEnumerable<InputMap> InputMaps { get; private set; }
+    internal static IEnumerable<ActionMap> InputMaps { get; private set; }
     #nullable enable
     
-    public static void Initialize(IEnumerable<InputMap> maps)
+    public static void Initialize(IEnumerable<ActionMap> maps)
     {
         Reader = new InputReader();
         InputMaps = maps;

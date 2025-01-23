@@ -1,6 +1,10 @@
-﻿namespace FlowerInputSystem.Modifiers;
+﻿using VYaml.Annotations;
 
-public interface IInputModifier
+namespace FlowerInputSystem.Modifiers;
+
+[YamlObject]
+[YamlObjectUnion("!scale", typeof(ScaleModifier))]
+public partial interface IInputModifier
 {
     public void Apply();
 }

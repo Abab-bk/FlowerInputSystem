@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using Godot;
+using Vector3 = Godot.Vector3;
 
 namespace FlowerInputSystem.Values;
 
@@ -8,10 +9,13 @@ public static class ActionValueExtension
     {
         return actionValue switch
         {
-            BoolActionValue { Value: true } => Vector3.UnitX,
+            BoolActionValue { Value: true } => Vector3.Right,
             BoolActionValue boolActionValue => Vector3.Zero,
-            Axis1DActionValue axis1DActionValue => Vector3.UnitX * axis1DActionValue.Value,
-            Axis2DActionValue axis2DActionValue => new Vector3(axis2DActionValue.Value, 0f),
+            Axis1DActionValue axis1DActionValue => Vector3.Right * axis1DActionValue.Value,
+            Axis2DActionValue axis2DActionValue => new Vector3(
+                axis2DActionValue.Value.X,
+                axis2DActionValue.Value.Y,
+                0f),
             Axis3DActionValue axis3DActionValue => axis3DActionValue.Value,
             _ => throw new ArgumentOutOfRangeException()
         };
@@ -34,9 +38,9 @@ public static class ActionValueExtension
     {
         return actionValue switch
         {
-            BoolActionValue { Value: true } => Vector2.UnitX,
+            BoolActionValue { Value: true } => Vector2.Right,
             BoolActionValue boolActionValue => Vector2.Zero,
-            Axis1DActionValue axis1DActionValue => Vector2.UnitX * axis1DActionValue.Value,
+            Axis1DActionValue axis1DActionValue => Vector2.Right * axis1DActionValue.Value,
             Axis2DActionValue axis2DActionValue => axis2DActionValue.Value,
             Axis3DActionValue axis3DActionValue => new Vector2(axis3DActionValue.Value.X, axis3DActionValue.Value.Y),
             _ => throw new ArgumentOutOfRangeException()

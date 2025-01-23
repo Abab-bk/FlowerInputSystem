@@ -1,9 +1,11 @@
 ﻿using FlowerInputSystem.Actions;
 using FlowerInputSystem.Values;
+using VYaml.Annotations;
 
 namespace FlowerInputSystem.Conditions;
 
-public struct PressCondition() : IInputCondition
+[YamlObject]
+public partial struct PressCondition() : IInputCondition
 {
     public float Actuation { get; set; } = 1f;
     
