@@ -11,7 +11,7 @@ internal struct TriggerTracer(IActionValue value)
     public bool AnyExplicitFired { get; set; }
     public bool FoundActive { get; set; }
     public bool FoundImplicit { get; set; }
-    public bool AllImplicitsFired { get; set; }
+    public bool AllImplicitsFired { get; set; } = true;
     public bool Blocked { get; set; }
     
     public void ApplyModifiers()
@@ -52,16 +52,15 @@ internal struct TriggerTracer(IActionValue value)
     {
         if (Blocked) return InputActionState.None;
 
-        return FoundExplicit switch
-        {
-            false when !FoundImplicit =>
-                Value.AsBool() ? InputActionState.Fired : InputActionState.None,
-            false or true when AllImplicitsFired => InputActionState.Fired,
-            _ => FoundActive ? InputActionState.Ongoing : InputActionState.None
-        };
+        if (!FoundExplicit && !FoundImplicit)
+            return Value.AsBool() ? InputActionState.Fired : InputActionState.None;
+        
+        if ((!FoundExplicit || AnyExplicitFired) &&
+            AllImplicitsFired) return InputActionState.Fired;
+        return FoundActive ? InputActionState.Ongoing : InputActionState.None;
     }
 
-    public void Combine(TriggerTracer other, Accumulation accumulation)
+    public void Combine(ref TriggerTracer other, Accumulation accumulation)
     {
         Vector3 accumulated;
 

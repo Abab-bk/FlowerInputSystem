@@ -12,7 +12,7 @@ config_version=5
 
 config/name="FlowerInputDemo"
 run/main_scene="res://World.tscn"
-config/features=PackedStringArray("4.3", "C#")
+config/features=PackedStringArray("4.4", "C#")
 config/icon="res://icon.svg"
 
 [dotnet]
@@ -22,3 +22,10 @@ project/assembly_name="FlowerInputDemo"
 [editor]
 
 naming/scene_name_casing=1
+
+[input]
+
+aa={
+"deadzone": 0.5,
+"events": []
+}

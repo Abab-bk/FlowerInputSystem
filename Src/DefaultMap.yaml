@@ -8,6 +8,7 @@ actions:
           - !hold
             duration: 1
             isOneShot: true
+            
   - name: PressK
     binds:
       - input: !keyboard
@@ -15,6 +16,7 @@ actions:
         conditions:
           - !press
             actuation: 1
+            
   - name: JustPressL
     binds:
       - input: !keyboard
@@ -22,3 +24,12 @@ actions:
         conditions:
           - !just-press
             actuation: 1
+            
+  - name: Move
+    binds:
+      - input: !joy-axis
+          x: leftX
+          y: leftY
+        conditions:
+          - !press
+            actuation: 0.5

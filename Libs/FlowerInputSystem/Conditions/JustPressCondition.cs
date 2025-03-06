@@ -1,6 +1,5 @@
 ﻿using FlowerInputSystem.Actions;
 using FlowerInputSystem.Values;
-using Godot;
 using VYaml.Annotations;
 
 namespace FlowerInputSystem.Conditions;
@@ -13,6 +12,8 @@ public partial struct JustPressCondition() : IInputCondition
     
     public InputActionState Evaluate(IActionValue actionValue, float delta)
     {
+        if (_previouslyActuated) return InputActionState.None;
+        
         var pressed = actionValue.IsActuated(Actuation);
         var result = pressed && !_previouslyActuated ?
             InputActionState.Fired : InputActionState.None;

@@ -1,5 +1,6 @@
 ﻿using FlowerInputSystem.Actions;
 using FlowerInputSystem.Values;
+using Godot;
 using VYaml.Annotations;
 
 namespace FlowerInputSystem.Conditions;
@@ -10,7 +11,6 @@ public partial struct HoldCondition(float duration) : IInputCondition
     [YamlIgnore] public float Elapsed { get; set; }
     
     public float Actuation { get; set; }
-
     public float Duration { get; set; } = duration;
     public bool IsOneShot { get; set; } = true;
     

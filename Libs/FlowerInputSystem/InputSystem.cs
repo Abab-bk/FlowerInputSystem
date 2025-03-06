@@ -1,4 +1,5 @@
 ﻿using FlowerInputSystem.Contexts;
+using Godot;
 
 namespace FlowerInputSystem;
 
@@ -9,7 +10,9 @@ public static class InputSystem
     internal static IEnumerable<ActionMap> InputMaps { get; private set; }
     #nullable enable
     
-    public static void Initialize(IEnumerable<ActionMap> maps)
+    public static void Initialize(
+        IEnumerable<ActionMap> maps
+        )
     {
         Reader = new InputReader();
         InputMaps = maps;
@@ -17,11 +20,16 @@ public static class InputSystem
 
     public static void Update(float delta)
     {
-        Reader.UpdateState();
-
         foreach (var inputMap in InputMaps)
         {
             inputMap.Update(delta);
         }
+        
+        Reader.ConsumeAll();
+    }
+
+    public static void InjectInput(InputEvent inputEvent)
+    {
+        Reader.InjectInput(inputEvent);
     }
 }

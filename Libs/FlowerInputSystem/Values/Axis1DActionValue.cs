@@ -6,8 +6,5 @@ public struct Axis1DActionValue : IActionValue
 
     public ValueDimension Dimension { get; }
 
-    public bool IsActuated(float actuation)
-    {
-        throw new NotImplementedException();
-    }
+    public bool IsActuated(float actuation) => Value > actuation;
 }

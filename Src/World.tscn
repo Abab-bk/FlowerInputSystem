@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://g0o2hlob4e18"]
 
-[ext_resource type="Script" path="res://World.cs" id="1_pw6ul"]
+[ext_resource type="Script" uid="uid://w2thf8nsb5ay" path="res://World.cs" id="1_pw6ul"]
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("DisableAllInputMapBtn", "EnableAllInputMapBtn", "LoggerLabel")]
 script = ExtResource("1_pw6ul")
